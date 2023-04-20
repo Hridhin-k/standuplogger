@@ -1,8 +1,7 @@
 import React from "react";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import NewProject from "./components/NewProject";
-import TestComponent from "./components/TestComponent";
+//import NewProject from "./components/NewProject";
 import LoginComponent from "./components/LoginComponent";
 import Home from "./components/Home";
 
@@ -12,8 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginComponent />} />
         <Route path="projects" element={<Home />}>
-          <Route path="newproject" element={<NewProject />} />
-          <Route path="testcomponent" element={<TestComponent />} />
+          {/* <Route path="newproject" element={<NewProject />} /> */}
         </Route>
       </Routes>
     </div>

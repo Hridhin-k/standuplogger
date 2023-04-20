@@ -8,16 +8,7 @@ interface CounterState {
 
 // Define the initial state using that type
 const initialState: CounterState = {
-  projects: [
-    "junclecat",
-    "check work rights",
-    "man with a van",
-    "chatbot",
-    "junclecat",
-    "check work rights",
-    "man with a van",
-    "chatbot",
-  ],
+  projects: ["junclecat", "check work rights", "man with a van", "chatbot"],
   //projects: [],
 };
 
@@ -28,6 +19,7 @@ export const projectSlice = createSlice({
   reducers: {
     addNewProject: (state, action) => {
       state.projects.push(action.payload);
+      console.log(action.payload, "inside slice reducer");
     },
   },
 });
