@@ -4,6 +4,8 @@ import { Routes, Route } from "react-router-dom";
 //import NewProject from "./components/NewProject";
 import LoginComponent from "./components/LoginComponent";
 import Home from "./components/Home";
+import HeaderComponent from "./components/HeaderComponent";
+import LogTableComponent from "./components/LogTableComponent";
 
 function App() {
   return (
@@ -11,7 +13,10 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginComponent />} />
         <Route path="projects" element={<Home />}>
-          {/* <Route path="newproject" element={<NewProject />} /> */}
+          <Route path=":projectId" element={<HeaderComponent />}>
+            <Route path="logs" element={<LogTableComponent />} />
+            {/* <Route path="newproject" element={<NewProject />} /> */}
+          </Route>
         </Route>
       </Routes>
     </div>

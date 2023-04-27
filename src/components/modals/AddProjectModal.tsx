@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 //import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
-import { addNewProject } from "../../features/slices/projectSlice";
+import {
+  addNewProject,
+  getAllProjects,
+} from "../../features/slices/projectSlice";
 
 export default function AddProjectModal() {
   const [showModal, setShowModal] = useState(false);
@@ -18,20 +21,26 @@ export default function AddProjectModal() {
     e.preventDefault();
     console.log("got into submit");
 
-    dispatch(addNewProject(project));
+    dispatch(addNewProject({ project_name: project }))
+      .unwrap()
+      .then(() => dispatch(getAllProjects()))
+      .catch(() => {
+        return "error";
+      });
+
     setShowModal(false);
   };
   return (
     <>
       <button
-        className="flex justify-between h-10 text-green-500 bg-black w-full rounded-lg border border-green-500
-        text-lg mt-2 p-2  text-center   items-center"
+        className="flex justify-between h-10 text-green-500 bg-black w-full rounded-lg border border-green-500 text-base
+        md:text-lg mt-2 p-2  text-center   items-center"
         type="button"
         onClick={() => {
           setShowModal(true);
         }}
       >
-        Open regular modal
+        Add new Project
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -52,7 +61,7 @@ export default function AddProjectModal() {
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
               {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+              <div className=" rounded-lg shadow-lg relative flex flex-col w-full border border-gray-400 bg-gray-900 outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-start justify-between px-6 py-6  rounded-t">
                   <h3 className="text-lg md:text-3xl font-semibold">
@@ -74,7 +83,7 @@ export default function AddProjectModal() {
                         type="text"
                         name="projectName"
                         id="email"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        className=" bg-slate-900 border-b border-gray-400 text-gray-400 text-sm outline-none focus:bg-slate-900 block w-full p-2.5"
                         placeholder="eg: Project X"
                         onChange={onAddProject}
                         required
