@@ -1,28 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { useNavigate } from "react-router-dom";
 import AddProjectModal from "./modals/AddProjectModal";
-import { getAllProjects } from "../features/slices/projectSlice";
+import { useAppSelector } from "../app/hooks";
 
 function ProjectDropdown() {
-  const dispatch = useAppDispatch();
   const [dropDown, setDropdown] = useState(false);
   const [projectName, setProjectName] = useState("");
-  const projectList = useAppSelector((state: any) => state.projects.projects);
   const Navigate = useNavigate();
-  useEffect(() => {
-    dispatch(getAllProjects());
-  }, [dispatch]);
+  const projectList = useAppSelector((state: any) => state.projects.projects);
+
+  const currentProjectId = window.location.href.split("/")[4];
+
+  // useEffect(() => {
+  //   if (projectList) {
+  //     console.log("project Dropdown use Effect");
+
+  //     setProjectName(projectList[0]?.project_name);
+  //     Navigate(`/projects/${projectList[0]?.project_id}`);
+  //   }
+  // }, [projectList]);
 
   useEffect(() => {
-    if (projectList.length !== 0) {
-      //conditionaly set project name in dropdown box
-      setProjectName(projectList[0].project_name);
-      Navigate(`/projects/${projectList[0].project_id}`);
-    } else {
-      setProjectName("");
-    }
-  }, [projectList]);
+    //when reloaded the displayed projectname in the dropdown is reset to empty string but the project id in url persist so we use this id to
+    // filter the project name from project array and display it accordingly
+    const currentProjectName = projectList.filter((list: any) => {
+      return list.project_id === parseInt(currentProjectId);
+    });
+
+    setProjectName(currentProjectName[0]?.project_name);
+  }, [currentProjectId, projectList]);
 
   const onDropdownToggle = () => {
     setDropdown(!dropDown);
@@ -31,9 +37,11 @@ function ProjectDropdown() {
   return (
     <>
       <button
-        className=" ml-6 md:ml-8 text-gray-400 w-48 md:w-64  bg-black   focus:outline-none  focus:ring-gray-400
+        className={`${
+          projectList.length === 0 ? "animate-bounce" : "animate-none"
+        }  ml-6 md:ml-8 text-gray-400 w-48 md:w-64  bg-black   focus:outline-none  focus:ring-gray-400
  rounded-full  text-base  px-4 py-1  text-center inline-flex items-center border  border-green-500
-   truncate"
+   truncate`}
         type="button"
         onClick={onDropdownToggle}
       >
@@ -73,8 +81,8 @@ function ProjectDropdown() {
                   "flex justify-between bg-black text-sm m-0 py-1 px-4   border-b border-gray-400 text-center text-gray-400 "
                 }
                 onClick={() => {
-                  setProjectName(projectNames.project_name);
                   Navigate(`/projects/${projectNames.project_id}`);
+                  setProjectName(projectNames.project_name);
                   setDropdown(false);
                 }}
               >

@@ -1,61 +1,45 @@
 import React, { useState } from "react";
 import { useAppDispatch } from "../../app/hooks";
 import {
-  addNewProject,
-  getAllProjects,
-} from "../../features/slices/projectSlice";
+  addNewMember,
+  getAllProjectMember,
+} from "../../features/slices/projectMemberSlice";
+import { useParams } from "react-router-dom";
 
-export default function AddProjectModal() {
+function AddMemberModal() {
   const [showModal, setShowModal] = useState(false);
-
-  const [project, setProject] = useState("");
   const dispatch = useAppDispatch();
+  const [memberName, setMemberName] = useState("");
+  const { projectId } = useParams();
 
-  const onAddProject = (e: any) => {
-    setProject(e.target.value);
+  const onAddMember = (e: any) => {
+    setMemberName(e.target.value);
   };
   const onSubmit = (e: any) => {
     e.preventDefault();
-
-    dispatch(addNewProject({ project_name: project }))
+    dispatch(
+      addNewMember({ projectMember_name: memberName, projectId: projectId })
+    )
       .unwrap()
       .then(() => {
-        dispatch(getAllProjects())
+        dispatch(getAllProjectMember({ projectId }))
           .unwrap()
           .then(() => {})
           .catch(() => {});
+        setMemberName("");
       })
-      .catch(() => {
-        return "error";
-      });
-
-    setShowModal(false);
+      .catch(() => {});
   };
   return (
     <>
       <button
-        className="flex justify-between h-10 text-green-500 bg-black w-full rounded-lg border border-green-500 text-base
-        md:text-lg mt-2 p-2  text-center   items-center"
+        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full shadow-lg"
         type="button"
         onClick={() => {
           setShowModal(true);
         }}
       >
-        Add new Project
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-          className="w-6 h-6 ml-5"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
+        Add Member
       </button>
       {showModal ? (
         <>
@@ -66,7 +50,7 @@ export default function AddProjectModal() {
                 {/*header*/}
                 <div className="flex items-start justify-between px-6 py-6  rounded-t">
                   <h3 className="text-lg md:text-3xl font-semibold text-gray-400">
-                    Add new Project
+                    Add new Member
                   </h3>
 
                   <button
@@ -84,9 +68,10 @@ export default function AddProjectModal() {
                         type="text"
                         name="projectName"
                         id="email"
+                        value={memberName}
                         className=" bg-slate-900 border-b border-gray-400 text-gray-400 text-sm outline-none focus:bg-slate-900 block w-full p-2.5"
-                        placeholder="eg: Project X"
-                        onChange={onAddProject}
+                        placeholder="eg: ABC"
+                        onChange={onAddMember}
                         required
                       />
                     </div>
@@ -109,3 +94,5 @@ export default function AddProjectModal() {
     </>
   );
 }
+
+export default AddMemberModal;

@@ -4,15 +4,31 @@ import { Outlet, useNavigate, useParams } from "react-router-dom";
 function HeaderComponent() {
   const Navigate = useNavigate();
   const { projectId } = useParams();
-  useEffect(() => {
-    Navigate(`/projects/${projectId}/logs`);
-  }, [Navigate, projectId]); // look out here !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  const currentTab = window.location.href.split("/")[5];
 
+  // useEffect(() => {
+  //   Navigate(`/projects/${projectId}/logs`);
+  // }, [Navigate]);
+  // useEffect(() => {
+  //   Navigate(`/projects/${projectId}/logs`);
+  // }, [projectId]);
+  // useEffect(() => {
+  //   Navigate(`/projects/${projectId}/logs`);
+  // }, [Navigate]);
   return (
     <>
       <div className="w-full border-b border-gray-400 h-10 mt-10">
         <div className="flex md:justify-start justify-center text-gray-400 md:mx-[69px] pt-1 text-xl">
-          <p className=" mx-4  hover:border-b-4 px-0 hover:border-green-500 hover:text-green-500">
+          <p
+            className={`${
+              currentTab === "logs"
+                ? "border-b-4 border-green-500 text-green-500"
+                : ""
+            } mx-4  hover:border-b-4 px-0 hover:border-green-500 hover:text-green-500 `}
+            onClick={() => {
+              Navigate(`/projects/${projectId}/logs`);
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -29,7 +45,16 @@ function HeaderComponent() {
             </svg>
             Daily Logs
           </p>
-          <p className=" mx-4  hover:border-b-4 px-0 hover:border-green-500 hover:text-green-500">
+          <p
+            className={` ${
+              currentTab === "settings"
+                ? "border-b-4 border-green-500 text-green-500"
+                : ""
+            } mx-4  hover:border-b-4 px-0 hover:border-green-500 hover:text-green-500`}
+            onClick={() => {
+              Navigate(`/projects/${projectId}/settings`);
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

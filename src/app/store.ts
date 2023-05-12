@@ -1,16 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import projectReducer from "../features/slices/projectSlice";
+import projectLogReducer from "../features/slices/projectLogSlice";
+import projectMemberReducer from "../features/slices/projectMemberSlice";
 export const store = configureStore({
   reducer: {
     projects: projectReducer,
+    projectLog: projectLogReducer,
+    projectDailyLog: projectLogReducer,
+    projectMember: projectMemberReducer,
   },
 });
-
-export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
-// export type AppThunk<ReturnType = void> = ThunkAction<
-//   ReturnType,
-//   RootState,
-//   unknown,
-//   Action<string>
-// >;
+export type AppDispatch = typeof store.dispatch;

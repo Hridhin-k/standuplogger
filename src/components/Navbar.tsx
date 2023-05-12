@@ -1,11 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProjectDropdown from "./ProjectDropdown";
+import { getAllProjects } from "../features/slices/projectSlice";
+import { useAppDispatch } from "../app/hooks";
 
 export function Navbar() {
   const [profileDropdown, setProfileDropdown] = useState(false);
   const onProfileClick = () => {
     setProfileDropdown(!profileDropdown);
   };
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getAllProjects())
+      .unwrap()
+      .then(() => {})
+      .catch(() => {});
+  }, []);
   return (
     <>
       <nav>
@@ -29,7 +38,7 @@ export function Navbar() {
             <div className="hidden md:block text-2xl md:text-3xl text-gray-400 mt-1 md:mt-0">
               SLOG
             </div>
-            <div className="z-50 items-center mt-1">
+            <div className="z-50 items-center mt-1 ">
               <ProjectDropdown />
             </div>
           </div>
